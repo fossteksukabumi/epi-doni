@@ -1,43 +1,54 @@
 import styled from "styled-components";
 
 export const NavWrapper = styled.nav`
+  /* CRITICAL: Use position fixed with explicit dimensions */
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: white;
+  width: 100vw;
+  height: 70px; /* Fixed height prevents any shift */
+  
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 12px 20px 15px;
+  
   box-shadow: 0 -5px 20px rgba(74, 144, 226, 0.15);
   border-top: 2px solid rgba(135, 206, 250, 0.3);
-  z-index: 999;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.95);
   
-  /* CRITICAL FIX: Prevent layout shift */
-  will-change: transform;
-  transform: translateZ(0);
+  /* CRITICAL: Highest z-index and isolation */
+  z-index: 10000;
+  isolation: isolate;
+  
+  /* CRITICAL: Prevent any repainting or layout recalculation */
+  will-change: auto;
+  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
+  contain: strict; /* Strictest containment */
+  
+  /* Font rendering consistency */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Prevent any user interaction shift */
+  pointer-events: auto;
+  touch-action: manipulation;
 
   @media (max-width: 480px) {
-    padding: 10px 15px 12px;
+    height: 65px;
   }
 
-  /* For devices with notch AND navigation buttons */
+  /* For devices with notch - add safe area */
   @supports (padding: max(0px)) {
-    padding-bottom: max(15px, calc(env(safe-area-inset-bottom) + 8px));
+    padding-bottom: env(safe-area-inset-bottom);
+    height: calc(70px + env(safe-area-inset-bottom));
     
-    /* Extra padding for Android devices with navigation bar */
-    @media (max-width: 768px) {
-      padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px));
+    @media (max-width: 480px) {
+      height: calc(65px + env(safe-area-inset-bottom));
     }
-  }
-  
-  /* Fallback for devices without safe-area support but have nav buttons */
-  @media (max-width: 768px) and (max-height: 900px) {
-    padding-bottom: 25px;
   }
 `;
 
@@ -45,45 +56,63 @@ export const NavItem = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  gap: 4px;
+  
+  /* Fixed dimensions to prevent shift */
+  min-width: 60px;
+  min-height: 50px;
+  
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 12px;
-  transition: all 0.3s ease;
+  
   position: relative;
   font-family: 'Poppins', sans-serif;
   color: #2c5f8d;
   
   /* Prevent layout shift */
   will-change: transform;
+  transform: translateZ(0);
+  contain: layout style paint;
+  
+  /* Remove tap effects that might cause shift */
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  
+  /* Smooth transitions only for visual effects */
+  transition: color 0.2s ease, transform 0.2s ease;
 
   span {
-    font-size: clamp(0.7rem, 2vw, 0.8rem);
+    font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.3px;
+    line-height: 1;
+    
+    /* Prevent text shift */
+    display: block;
+    text-align: center;
   }
 
-  /* Active/Hover background */
+  /* Hover background */
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: linear-gradient(135deg, #e6f7ff, #f0f8ff);
     border-radius: 12px;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s ease;
     z-index: -1;
+    pointer-events: none;
   }
 
   &:hover,
   &:active {
     color: #4a90e2;
-    transform: translateY(-3px);
+    transform: translateY(-2px) translateZ(0);
 
     &::before {
       opacity: 1;
@@ -91,12 +120,14 @@ export const NavItem = styled.button`
   }
 
   &:active {
-    transform: translateY(-1px);
+    transform: translateY(0) translateZ(0);
   }
 
   @media (max-width: 480px) {
-    padding: 6px 8px;
-    gap: 4px;
+    min-width: 55px;
+    min-height: 45px;
+    padding: 5px 8px;
+    gap: 3px;
 
     span {
       font-size: 0.65rem;
@@ -104,8 +135,8 @@ export const NavItem = styled.button`
   }
 
   @media (max-width: 360px) {
-    padding: 5px 6px;
-
+    min-width: 50px;
+    
     span {
       display: none;
     }
@@ -113,22 +144,34 @@ export const NavItem = styled.button`
 `;
 
 export const Icon = styled.span`
-  font-size: 1.5rem;
-  transition: transform 0.3s ease;
+  font-size: 1.4rem;
+  line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-
+  
+  /* Fixed size to prevent emoji shift */
+  width: 1.4rem;
+  height: 1.4rem;
+  
+  /* Smooth scale only */
+  transition: transform 0.2s ease;
+  will-change: transform;
+  
   ${NavItem}:hover &,
   ${NavItem}:active & {
-    transform: scale(1.2);
+    transform: scale(1.15) translateZ(0);
   }
 
   @media (max-width: 480px) {
     font-size: 1.3rem;
+    width: 1.3rem;
+    height: 1.3rem;
   }
 
   @media (max-width: 360px) {
     font-size: 1.4rem;
+    width: 1.4rem;
+    height: 1.4rem;
   }
 `;
