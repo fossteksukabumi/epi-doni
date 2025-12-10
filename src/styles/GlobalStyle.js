@@ -15,6 +15,10 @@ const GlobalStyles = createGlobalStyle`
     scroll-behavior: smooth;
     font-size: 16px;
     
+    /* CRITICAL: Prevent layout shift */
+    overflow-x: hidden;
+    overflow-y: scroll; /* Always show scrollbar space */
+    
     @media (max-width: 768px) {
       font-size: 15px;
     }
@@ -34,6 +38,15 @@ const GlobalStyles = createGlobalStyle`
     line-height: 1.6;
     overflow-x: hidden;
     min-height: 100vh;
+    
+    /* CRITICAL: Prevent any layout shifts */
+    position: relative;
+  }
+
+  /* CRITICAL: Prevent layout shift from dynamic content */
+  #root {
+    isolation: isolate;
+    contain: layout style;
   }
 
   /* Typography */
@@ -229,6 +242,11 @@ const GlobalStyles = createGlobalStyle`
       padding-left: max(0px, env(safe-area-inset-left));
       padding-right: max(0px, env(safe-area-inset-right));
     }
+  }
+  
+  /* CRITICAL: Tabular numbers globally for all numbers */
+  * {
+    font-variant-numeric: tabular-nums;
   }
 `;
 
