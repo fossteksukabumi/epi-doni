@@ -1,37 +1,39 @@
+"use client"
 import React from "react";
+import { createPortal } from "react-dom";
 import { NavWrapper, NavItem, Icon } from "./BottomNav.style";
 
 const scrollToId = (id) => {
   const el = document.getElementById(id);
   if (!el) return;
-  // jika parent scrollable, ganti target: el.scrollIntoView({ behavior: "smooth", block: "start" })
   el.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
-const BottomNav = () => {
-  return (
+const BottomNav = React.memo(() => {
+  return createPortal(
     <NavWrapper>
-      <NavItem as="button" onClick={() => scrollToId("home")}>
+      <NavItem onClick={() => scrollToId("home")}>
         <Icon>🏠</Icon>
         <span>Home</span>
       </NavItem>
 
-      <NavItem as="button" onClick={() => scrollToId("gallery")}>
+      <NavItem onClick={() => scrollToId("gallery")}>
         <Icon>🖼️</Icon>
         <span>Gallery</span>
       </NavItem>
 
-      <NavItem as="button" onClick={() => scrollToId("story")}>
+      <NavItem onClick={() => scrollToId("story")}>
         <Icon>📖</Icon>
         <span>Story</span>
       </NavItem>
 
-      <NavItem as="button" onClick={() => scrollToId("wish")}>
+      <NavItem onClick={() => scrollToId("wish")}>
         <Icon>💬</Icon>
         <span>Ucapan</span>
       </NavItem>
-      </NavWrapper>
+    </NavWrapper>,
+    document.body // taruh di body agar terpisah dari countdown
   );
-};
+});
 
 export default BottomNav;
