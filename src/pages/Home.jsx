@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import Cover from "../components/Cover/Cover";
 import Info from "../components/Information/Information";
 import Countdown from "../components/Countdown/Countdown";
@@ -10,6 +11,30 @@ import CommentForm from "../components/CommentForm/CommentForm";
 import CommentList from "../components/CommentList/CommentList";
 import Footer from "../components/Footer/Footer";
 import BottomNav from "../components/BottomNav/BottomNav";
+
+// CRITICAL: Fixed container to prevent layout shift
+const MainContainer = styled.div`
+  /* Fixed padding for bottom nav */
+  padding-bottom: 90px;
+  
+  /* Prevent layout shift */
+  min-height: 100vh;
+  position: relative;
+  isolation: isolate;
+  
+  /* For devices with safe area */
+  @supports (padding: max(0px)) {
+    padding-bottom: calc(90px + env(safe-area-inset-bottom));
+  }
+  
+  @media (max-width: 480px) {
+    padding-bottom: 85px;
+    
+    @supports (padding: max(0px)) {
+      padding-bottom: calc(85px + env(safe-area-inset-bottom));
+    }
+  }
+`;
 
 const Home = () => {
   const [comments, setComments] = useState([]);
@@ -33,8 +58,7 @@ const Home = () => {
 
   return (
     <>
-    
-      <div style={{ paddingBottom: "90px" }}>
+      <MainContainer>
         <Cover />
         <Info />
         <Countdown />
@@ -45,7 +69,7 @@ const Home = () => {
         <CommentForm onSuccess={() => setRefresh((r) => !r)} />
         <CommentList comments={comments} />
         <Footer />
-      </div>
+      </MainContainer>
 
       <BottomNav />
     </>
