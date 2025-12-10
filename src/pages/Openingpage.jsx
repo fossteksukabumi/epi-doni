@@ -1,6 +1,6 @@
 import Opening from "../components/Opening/Opening";
 import { useMusic } from "../hooks/useMusic";
-import musicFile from "../assets/music/Jok.mp3";
+import musicFile from "../assets/music/Chrisye.mp3";
 import { useNavigate } from "react-router-dom";
 
 const OpeningPage = () => {
@@ -16,3 +16,4 @@ const OpeningPage = () => {
 };
 
 export default OpeningPage;
+
