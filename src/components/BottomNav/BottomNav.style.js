@@ -15,14 +15,29 @@ export const NavWrapper = styled.nav`
   z-index: 999;
   backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.95);
+  
+  /* CRITICAL FIX: Prevent layout shift */
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 
   @media (max-width: 480px) {
     padding: 10px 15px 12px;
   }
 
-  /* For devices with notch */
+  /* For devices with notch AND navigation buttons */
   @supports (padding: max(0px)) {
-    padding-bottom: max(15px, env(safe-area-inset-bottom));
+    padding-bottom: max(15px, calc(env(safe-area-inset-bottom) + 8px));
+    
+    /* Extra padding for Android devices with navigation bar */
+    @media (max-width: 768px) {
+      padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px));
+    }
+  }
+  
+  /* Fallback for devices without safe-area support but have nav buttons */
+  @media (max-width: 768px) and (max-height: 900px) {
+    padding-bottom: 25px;
   }
 `;
 
@@ -40,6 +55,9 @@ export const NavItem = styled.button`
   position: relative;
   font-family: 'Poppins', sans-serif;
   color: #2c5f8d;
+  
+  /* Prevent layout shift */
+  will-change: transform;
 
   span {
     font-size: clamp(0.7rem, 2vw, 0.8rem);
@@ -89,7 +107,7 @@ export const NavItem = styled.button`
     padding: 5px 6px;
 
     span {
-      display: none; /* Hide text on very small screens */
+      display: none;
     }
   }
 `;
