@@ -1,5 +1,5 @@
 import { Wrapper, Overlay, Names, Subtitle, ButtonOpen } from "./Opening.style";
-import imageBg from "../../assets/images/background.jpg";
+import imageBg from "../../assets/images/background2.jpg";
 
 const Opening = ({ onOpen }) => {
   return (
@@ -13,3 +13,4 @@ const Opening = ({ onOpen }) => {
 };
 
 export default Opening;
+
