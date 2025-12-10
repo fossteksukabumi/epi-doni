@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.section`
-  min-height: 100vh;
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,8 +15,11 @@ export const Wrapper = styled.section`
   padding: 80px 20px;
   position: relative;
   overflow: hidden;
+  
+  /* Prevent layout shift */
+  contain: layout style paint;
+  isolation: isolate;
 
-  /* Decorative animated background */
   &::before,
   &::after {
     content: '';
@@ -24,6 +27,7 @@ export const Wrapper = styled.section`
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
     animation: pulse 8s ease-in-out infinite;
+    pointer-events: none;
   }
 
   &::before {
@@ -148,12 +152,16 @@ export const TimerBox = styled.div`
     border-radius: 16px;
     padding: 25px 30px;
     min-width: 110px;
+    width: 110px; /* CRITICAL: Fixed width to prevent layout shift */
     box-shadow: 
       0 10px 30px rgba(0, 0, 0, 0.15),
       0 5px 15px rgba(74, 144, 226, 0.2);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
+    
+    /* CRITICAL: Prevent layout shift */
+    contain: layout style paint;
 
     /* Shine effect */
     &::before {
@@ -171,6 +179,7 @@ export const TimerBox = styled.div`
       );
       transform: rotate(45deg);
       animation: shine 3s ease-in-out infinite;
+      pointer-events: none;
     }
 
     @keyframes shine {
@@ -196,6 +205,7 @@ export const TimerBox = styled.div`
     > div {
       padding: 20px 25px;
       min-width: 100px;
+      width: 100px; /* Fixed width */
     }
   }
 
@@ -205,6 +215,7 @@ export const TimerBox = styled.div`
     > div {
       padding: 18px 20px;
       min-width: 75px;
+      width: 75px; /* Fixed width */
       border-radius: 12px;
     }
   }
@@ -215,6 +226,7 @@ export const TimerBox = styled.div`
     > div {
       padding: 15px 18px;
       min-width: 70px;
+      width: 70px; /* Fixed width */
     }
   }
 `;
@@ -228,6 +240,14 @@ export const Number = styled.div`
   margin-bottom: 8px;
   position: relative;
   z-index: 1;
+  
+  /* CRITICAL: Use monospace variant for consistent width */
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  
+  /* Prevent layout shift from number changes */
+  min-width: 2ch; /* Reserve space for 2 characters */
+  text-align: center;
 
   @media (max-width: 480px) {
     margin-bottom: 6px;
