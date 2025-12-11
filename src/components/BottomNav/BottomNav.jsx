@@ -14,22 +14,22 @@ const BottomNav = React.memo(() => {
     <NavWrapper>
       <NavItem onClick={() => scrollToId("home")}>
         <Icon>🏠</Icon>
-        <span>Home</span>
+        Home
       </NavItem>
 
       <NavItem onClick={() => scrollToId("gallery")}>
         <Icon>🖼️</Icon>
-        <span>Gallery</span>
+        Gallery
       </NavItem>
 
       <NavItem onClick={() => scrollToId("story")}>
         <Icon>📖</Icon>
-        <span>Story</span>
+        Story
       </NavItem>
 
       <NavItem onClick={() => scrollToId("wish")}>
         <Icon>💬</Icon>
-        <span>Ucapan</span>
+        Ucapan
       </NavItem>
     </NavWrapper>,
     document.body // taruh di body agar terpisah dari countdown
@@ -37,3 +37,4 @@ const BottomNav = React.memo(() => {
 });
 
 export default BottomNav;
+
