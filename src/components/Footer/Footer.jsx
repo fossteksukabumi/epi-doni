@@ -3,10 +3,17 @@ import { FooterContainer } from "./Footer.style";
 
 const Footer = () => {
   const year = new Date().getFullYear();
-
   return (
     <FooterContainer>
-      © {year} Dibuat oleh UMKM Sukabumi.
+      © {year} Dibuat oleh{" "}
+      <a
+        href="https://www.instagram.com/umkmsukabumi.web"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        UMKM Sukabumi
+      </a>
+      .
     </FooterContainer>
   );
 };
